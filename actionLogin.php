@@ -19,8 +19,8 @@
     if($registro = mysqli_fetch_assoc($efetuarLogin)){
         $quantidadeLogin = mysqli_num_rows($efetuarLogin);
   
-        $emaiUsuario = $registro["email"];
-        $nomeUsuario = $registro["nome"];
+        $emaiUsuario = $registro["emailUsuario"];
+        $nomeUsuario = $registro["nomeUsuario"];
 
 
         $_SESSION["emaiUsuario"] = $emaiUsuario;
@@ -38,6 +38,7 @@
     }
 
 ?>
+
 
 
 
