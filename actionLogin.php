@@ -7,8 +7,8 @@ include 'conexaoBD.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     // Escapar caracteres perigosos para evitar SQL Injection
-    $email = mysqli_real_escape_string($link, $_POST['email']);
-    $senha = mysqli_real_escape_string($link, $_POST['senha']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $senha = mysqli_real_escape_string($conn, $_POST['senha']);
 
     // Criptografar senha para comparar com o banco
     $senhaHash = md5($senha);
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             WHERE emailUsuario = '$email' 
             AND senhaUsuario = '$senhaHash' 
             LIMIT 1";
-    $result = mysqli_query($link, $sql);
+    $result = mysqli_query($conn, $sql);
 
     // Verificar se encontrou
     if (mysqli_num_rows($result) > 0) {
@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // Fechar conexão
-mysqli_close($link);
+mysqli_close($conn);
 ?>
+
 
