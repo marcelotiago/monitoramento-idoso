@@ -9,8 +9,8 @@
 
     $buscarLogin ="SELECT *
                    FROM usuario 
-                    WHERE email = '$emailUsuario'
-                    AND senha = md5('$senhaUsuario')
+                    WHERE emailUsuario = '$emailUsuario'
+                    AND senhaUsuario = md5('$senhaUsuario')
                     ";
 
     
@@ -36,4 +36,5 @@
         echo"<h1>Não existe login para os dados informados! </h1>";
         header("location:FormLogin.php?erroLogin='dadosInvalidos'");
     }
+
 ?>
