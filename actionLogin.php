@@ -3,8 +3,8 @@
     session_start(); //função para inciar uma sessão
     include("conexaoBD.php");
 
-    $emailUsuario = mysqli_real_escape_string($link, $_POST["emailUsuario"]);
-    $senhaUsuario = mysqli_real_escape_string($link, $_POST["senhaUsuario"]);
+    $emailUsuario = mysqli_real_escape_string($conn, $_POST["emailUsuario"]);
+    $senhaUsuario = mysqli_real_escape_string($conn, $_POST["senhaUsuario"]);
 
 
     $buscarLogin ="SELECT *
@@ -38,3 +38,4 @@
     }
 
 ?>
+
