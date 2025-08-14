@@ -1,45 +1,43 @@
 <?php
+session_start(); // Iniciar sessão
 
-    session_start(); //função para inciar uma sessão
-    include("conexaoBD.php");
+// Conexão com o banco
+include("conexaoBD.php");
 
-    $emailUsuario = mysqli_real_escape_string($conn, $_POST["emailUsuario"]);
-    $senhaUsuario = mysqli_real_escape_string($conn, $_POST["senhaUsuario"]);
+// Verifica se a conexão foi feita corretamente
+if (!isset($link)) {
+    die("Erro: conexão com o banco não estabelecida.");
+}
 
+// Verificar se os campos do formulário foram enviados
+if (isset($_POST["emailUsuario"]) && isset($_POST["senhaUsuario"])) {
+    $emailUsuario = mysqli_real_escape_string($link, $_POST["emailUsuario"]);
+    $senhaUsuario = mysqli_real_escape_string($link, $_POST["senhaUsuario"]);
+} else {
+    die("Erro: campos de login não enviados.");
+}
 
-    $buscarLogin ="SELECT *
-                   FROM usuario 
-                    WHERE emailUsuario = '$emailUsuario'
-                    AND senhaUsuario = md5('$senhaUsuario')
-                    ";
+// Monta a query de busca
+$buscarLogin = "
+    SELECT * FROM usuario 
+    WHERE emailUsuario = '$emailUsuario'
+    AND senhaUsuario = md5('$senhaUsuario')
+";
 
-    
-    $efetuarLogin = mysqli_query($link, $buscarLogin);
-    
-    if($registro = mysqli_fetch_assoc($efetuarLogin)){
-        $quantidadeLogin = mysqli_num_rows($efetuarLogin);
-  
-        $emaiUsuario = $registro["emailUsuario"];
-        $nomeUsuario = $registro["nomeUsuario"];
+// Executa a query
+$efetuarLogin = mysqli_query($link, $buscarLogin);
 
+// Verifica se encontrou algum registro
+if ($registro = mysqli_fetch_assoc($efetuarLogin)) {
+    $_SESSION["emailUsuario"] = $registro["emailUsuario"];  // Corrigido nome do campo
+    $_SESSION["nomeUsuario"] = $registro["nome"];
 
-        $_SESSION["emaiUsuario"] = $emaiUsuario;
-        $_SESSION["nomeUsuario"] = $nomeUsuario;
-
-        header("location:index.php"); //Funçao que rediereciona para uma determinada pagina
-
-
-        //echo "<h1>Foram encontrados $quantidadeLogin com os dados informados!</h1>";
-
-    }
-    else{
-        echo"<h1>Não existe login para os dados informados! </h1>";
-        header("location:FormLogin.php?erroLogin='dadosInvalidos'");
-    }
-
+    header("Location: index.php");
+    exit;
+} else {
+    // Redireciona de volta para o login com erro
+    header("Location: FormLogin.php?erroLogin=dadosInvalidos");
+    exit;
+}
 ?>
-
-
-
-
 
