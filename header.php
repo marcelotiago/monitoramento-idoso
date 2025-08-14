@@ -34,7 +34,7 @@
         <!-- Container para abrigar o Logotipo -->
         <div class="container-fluid text-center p-3">
             <a href="index.php" title="Retornar para a página inicial">
-                <img src="img/logotipo.png" style="width:150px;">
+                <img src="img/WhatsApp Image 2025-08-14 at 14.36.05.jpeg" style="width:150px;">
             </a>
         </div>
 
@@ -61,4 +61,5 @@
         </nav>
 
         <!-- Início do Container para abrigar os conteúdos das páginas do sistema -->
+
         <div class="container-fluid mt-5 mb-5">
