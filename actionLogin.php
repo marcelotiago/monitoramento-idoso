@@ -2,20 +2,7 @@
 // Inicia a sessão (para guardar login do usuário)
 session_start();
 
-// Dados de conexão
-$host = "localhost";
-$user = "root"; // Usuário padrão do XAMPP
-$pass = "";     // Senha padrão do XAMPP (normalmente vazia)
-$db   = "monitoramento-idoso";
-
-// Conectar ao MySQL
-$link = mysqli_connect($host, $user, $pass, $db);
-
-// Verificar conexão
-if (!$link) {
-    die("Erro na conexão com o banco: " . mysqli_connect_error());
-}
-
+include 'conexaoBD.php';
 // Verificar se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
@@ -54,3 +41,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Fechar conexão
 mysqli_close($link);
 ?>
+
