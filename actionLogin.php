@@ -1,43 +1,34 @@
 <?php
-session_start(); // Iniciar sessão
-
 // Conexão com o banco
-include("conexaoBD.php");
+$host = "localhost";
+$user = "root"; // usuário do MySQL
+$pass = "";     // senha do MySQL
+$db   = "monitoramento-idoso";
 
-// Verifica se a conexão foi feita corretamente
-if (!isset($link)) {
-    die("Erro: conexão com o banco não estabelecida.");
+$link = mysqli_connect($host, $user, $pass, $db);
+
+// Verifica a conexão
+if (!$link) {
+    die("Erro na conexão: " . mysqli_connect_error());
 }
 
-// Verificar se os campos do formulário foram enviados
-if (isset($_POST["emailUsuario"]) && isset($_POST["senhaUsuario"])) {
-    $emailUsuario = mysqli_real_escape_string($link, $_POST["emailUsuario"]);
-    $senhaUsuario = mysqli_real_escape_string($link, $_POST["senhaUsuario"]);
+// Recebe dados do formulário
+$email = mysqli_real_escape_string($link, $_POST['email']);
+$senha = mysqli_real_escape_string($link, $_POST['senha']);
+
+// Gera o hash MD5 da senha (igual ao que está no banco)
+$senhaHash = md5($senha);
+
+// Consulta SQL
+$sql = "SELECT * FROM usuarios WHERE emailUsuario = '$email' AND senhaUsuario = '$senhaHash'";
+$result = mysqli_query($link, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    echo "Login realizado com sucesso!";
 } else {
-    die("Erro: campos de login não enviados.");
+    echo "E-mail ou senha inválidos!";
 }
 
-// Monta a query de busca
-$buscarLogin = "
-    SELECT * FROM usuario 
-    WHERE emailUsuario = '$emailUsuario'
-    AND senhaUsuario = md5('$senhaUsuario')
-";
-
-// Executa a query
-$efetuarLogin = mysqli_query($link, $buscarLogin);
-
-// Verifica se encontrou algum registro
-if ($registro = mysqli_fetch_assoc($efetuarLogin)) {
-    $_SESSION["emailUsuario"] = $registro["emailUsuario"];  // Corrigido nome do campo
-    $_SESSION["nomeUsuario"] = $registro["nome"];
-
-    header("Location: index.php");
-    exit;
-} else {
-    // Redireciona de volta para o login com erro
-    header("Location: FormLogin.php?erroLogin=dadosInvalidos");
-    exit;
-}
+mysqli_close($link);
 ?>
 
